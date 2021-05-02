@@ -194,7 +194,7 @@
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal';
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   props: {
@@ -219,12 +219,6 @@ export default {
     };
   },
   methods: {
-    showModal() {
-      this.modal.show();
-    },
-    hideModal() {
-      this.modal.hide();
-    },
     uploadFile() {
       const uploadedFile = this.$refs.fileInput.files[0];
       const formData = new FormData();
@@ -238,8 +232,6 @@ export default {
       });
     },
   },
-  mounted() {
-    this.modal = new Modal(this.$refs.modal);
-  },
+  mixins: [modalMixin],
 };
 </script>
