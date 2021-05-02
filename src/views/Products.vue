@@ -1,7 +1,7 @@
 <template>
   <div class="text-end mt-3">
     <button class="btn btn-primary" type="button"
-    @click="$refs.productModal.showModal()">
+    @click="openModal">
       增加一個產品
     </button>
   </div>
@@ -39,7 +39,9 @@
       </tr>
     </tbody>
   </table>
-  <ProductModal ref="productModal"></ProductModal>
+  <ProductModal ref="productModal"
+  :product="tempProduct"
+  @update-product="updateProduct"></ProductModal>
 </template>
 
 <script>
@@ -50,6 +52,7 @@ export default {
     return {
       products: [],
       pagination: {},
+      tempProduct: {},
     };
   },
   components: {
@@ -64,6 +67,21 @@ export default {
           this.products = res.data.products;
           this.pagination = res.data.pagination;
         }
+      });
+    },
+    openModal() {
+      this.tempProduct = {};
+      const productComponent = this.$refs.productModal;
+      productComponent.showModal();
+    },
+    updateProduct(item) {
+      this.tempProduct = item;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
+      const productComponent = this.$refs.productModal;
+      this.$http.post(api, { data: this.tempProduct }).then((response) => {
+        console.log(response);
+        productComponent.hideModal();
+        this.getProducts();
       });
     },
   },
