@@ -31,7 +31,12 @@
                   查看更多
                 </button>
                 <button type="button" class="btn btn-outline-danger"
-                        >
+                        :disabled="this.status.loadingItem === item.id"
+                        @click="addCart(item.id)">
+                  <div v-if="this.status.loadingItem === item.id"
+                      class="spinner-grow text-danger spinner-grow-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                   加到購物車
                 </button>
               </div>
@@ -52,7 +57,7 @@ export default {
       products: [],
       product: {},
       status: {
-        loadingItem: '',
+        loadingItem: '', // 對應品項 id
       },
     };
   },
@@ -68,6 +73,19 @@ export default {
     },
     getProduct(id) {
       this.$router.push(`/user/product/${id}`);
+    },
+    addCart(id) {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+      this.status.loadingItem = id;
+      const cart = {
+        product_id: id,
+        qty: 1,
+      };
+      this.$http.post(url, { data: cart })
+        .then((res) => {
+          this.status.loadingItem = '';
+          console.log(res);
+        });
     },
   },
   created() {
