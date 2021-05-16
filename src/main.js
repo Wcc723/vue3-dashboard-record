@@ -14,7 +14,9 @@ app.config.globalProperties.$filters = {
   date,
   currency,
 };
-// 此函式的用途是整合 Ajax 的錯誤事件，統一整理發送給予 Toast 處理
+
+// $httpMessageState 此函式的用途是整合 Ajax 的錯誤事件，統一整理發送給予 Toast
+// 正常來說不建議太多方法掛 Global，這裡可以使用 provide 來處理
 app.config.globalProperties.$httpMessageState = $httpMessageState;
 
 app.use(VueAxios, axios);
