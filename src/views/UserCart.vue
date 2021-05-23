@@ -152,6 +152,7 @@ export default {
         .then((res) => {
           this.status.loadingItem = '';
           console.log(res);
+          this.getCart();
         });
     },
     getCart() {
@@ -175,6 +176,29 @@ export default {
         console.log(res);
         this.status.loadingItem = '';
         this.getCart();
+      });
+    },
+    removeCartItem(id) {
+      this.status.loadingItem = id;
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${id}`;
+      this.isLoading = true;
+      this.$http.delete(url).then((response) => {
+        this.$httpMessageState(response, '移除購物車品項');
+        this.status.loadingItem = '';
+        this.getCart();
+        this.isLoading = false;
+      });
+    },
+    addCouponCode() {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/coupon`;
+      const coupon = {
+        code: this.coupon_code,
+      };
+      this.isLoading = true;
+      this.$http.post(url, { data: coupon }).then((response) => {
+        this.$httpMessageState(response, '加入優惠券');
+        this.getCart();
+        this.isLoading = false;
       });
     },
   },
