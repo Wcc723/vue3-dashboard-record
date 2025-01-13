@@ -51,7 +51,7 @@
     </tbody>
   </table>
   <OrderModal :order="tempOrder"
-              ref="orderModal" @update-paid="updatePaid"></OrderModal>
+              ref="orderModal" @update-order="updatePaid"></OrderModal>
   <DelModal :item="tempOrder" ref="delModal" @del-item="delOrder"></DelModal>
   <Pagination :pages="pagination" @emit-pages="getOrders"></Pagination>
 </template>
@@ -102,6 +102,8 @@ export default {
     },
     updatePaid(item) {
       this.isLoading = true;
+      console.log('updatePaid', item);
+
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${item.id}`;
       const paid = {
         is_paid: item.is_paid,
